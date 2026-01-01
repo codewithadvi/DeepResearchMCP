@@ -1,0 +1,20 @@
+# Environment variables (CRITICAL - DON'T UPLOAD)
+.env
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+venv/
+env/
+
+# Research data
+research_history.json
+*.pkl
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
