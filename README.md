@@ -20,7 +20,6 @@ An intelligent research tool that conducts automated literature reviews and iden
 
 <img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/93ac12b6-6826-45d1-9fab-d26a95666611" />
 
-```
 
 ### Data Flow
 
