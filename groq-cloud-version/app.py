@@ -10,6 +10,25 @@ from datetime import datetime
 # 1. Load the secret key automatically
 load_dotenv()
 
+# Helper function to get API keys from either st.secrets or environment
+def get_api_key(key_name):
+    """Get API key from Streamlit secrets (cloud) or environment (local)"""
+    # Try st.secrets first (Streamlit Cloud)
+    try:
+        if hasattr(st, 'secrets') and key_name in st.secrets:
+            value = st.secrets[key_name]
+            if value and str(value).strip():
+                return str(value).strip()
+    except Exception:
+        pass
+    
+    # Fall back to environment variable (local development)
+    env_value = os.getenv(key_name)
+    if env_value and env_value.strip():
+        return env_value.strip()
+    
+    return None
+
 st.set_page_config(page_title="Agentic Deep Researcher", layout="wide")
 
 # 2. Setup Session State for Chat History
@@ -22,8 +41,30 @@ if "research_history" not in st.session_state:
 # 3. Sidebar
 with st.sidebar:
     st.header("⚙️ Configuration")
-    api_status = "✅ Connected" if os.getenv("LINKUP_API_KEY") else "❌ Missing Key"
-    st.info(f"LinkUp API Status: {api_status}")
+    
+    # Check both API keys
+    linkup_key = get_api_key("LINKUP_API_KEY")
+    groq_key = get_api_key("GROQ_API_KEY")
+    
+    linkup_status = "✅ Connected" if linkup_key else "❌ Missing"
+    groq_status = "✅ Connected" if groq_key else "❌ Missing"
+    
+    st.info(f"LinkUp API: {linkup_status}")
+    st.info(f"Groq API: {groq_status}")
+    
+    # Show helpful setup message if keys are missing
+    if not linkup_key or not groq_key:
+        st.warning("⚠️ **Setup Required:**")
+        st.markdown("""
+        In Streamlit Cloud:
+        1. Go to app settings (⚙️)
+        2. Click "Secrets"
+        3. Add:
+        ```
+        LINKUP_API_KEY = "your-key-here"
+        GROQ_API_KEY = "your-key-here"
+        ```
+        """)
     
     st.divider()
     st.subheader("📚 Research History")
@@ -71,10 +112,17 @@ if prompt := st.chat_input("What do you want to research?"):
     with st.chat_message("user"):
         st.markdown(f"**You:** {prompt}")
 
-    # Check for API Key
-    if not os.getenv("LINKUP_API_KEY"):
-        st.error("❌ LinkUp API Key not found. Please add it to your .env file!")
+    # Check for API Keys
+    linkup_key = get_api_key("LINKUP_API_KEY")
+    groq_key = get_api_key("GROQ_API_KEY")
+    
+    if not linkup_key or not groq_key:
+        st.error("❌ API Keys missing! Please configure in Streamlit Cloud Secrets or .env file")
         st.stop()
+    
+    # Pass API keys to agents module via environment variables
+    os.environ["LINKUP_API_KEY"] = linkup_key
+    os.environ["GROQ_API_KEY"] = groq_key
 
     # Run the Agents
     with st.chat_message("assistant"):
@@ -110,6 +158,22 @@ if prompt := st.chat_input("What do you want to research?"):
             })
             
             st.success("✅ Research complete!")
+            
+        except Exception as e:
+            progress_bar.empty()
+            progress_text.empty()
+            
+            error_msg = str(e)
+            
+            # Check if it's a rate limit error
+            if "rate_limit" in error_msg.lower() or "ratelimit" in error_msg.lower():
+                st.warning("⚠️ **Groq Rate Limit Reached**")
+                st.info("🕐 The free tier has a limit of 12,000 tokens/minute. Wait 15 seconds and try again.")
+                st.markdown("💡 **Tip:** The app now uses a faster model to reduce rate limit issues!")
+            else:
+                st.error(f"❌ Error: {error_msg}")
+            
+            result = f"Research interrupted. Please try again."
             
         except Exception as e:
             progress_bar.empty()
