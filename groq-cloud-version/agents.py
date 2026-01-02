@@ -27,7 +27,7 @@ def get_llm_client():
         )
     
     return LLM(
-        model="groq/mixtral-8x7b-32768",
+        model="groq/llama-3.3-70b-versatile",  # Updated to supported model
         api_key=groq_key
     )
 
