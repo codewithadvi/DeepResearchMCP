@@ -1,488 +1,203 @@
-# Deep Research MCP - AI-Powered Research Gap Analyzer
+# ResearchLens
 
-An intelligent research tool that conducts automated literature reviews and identifies research gaps using multi-agent AI. **Fully free, open-source, and deployable** with your choice of two approaches.
-
-##  Features
-
--  **4-Agent AI Research System** - Specialized agents for searching, analyzing, and synthesizing research
--  **Research Gap Detection** - Identifies unexplored combinations and contradictions in research
--  **Academic Paper Search** - Integrates with LinkUp API for deep paper discovery
--  **Multi-Format Export** - JSON, Markdown, PDF exports of research findings
--  **Local Development** - Run with Ollama + DeepSeek-R1 7B for best quality (GPU optional)
--  **Cloud Deployment** - Deploy free to Streamlit Cloud with Groq API
--  **Dual Mode** - Switch between local Ollama and Groq API with one config change
-- 🛠️**MCP Support** - Model Context Protocol server for IDE integration (optional)
--  **Fully Free** - No credit card needed, uses free tiers of all APIs
+AI-powered research assistant that automatically finds gaps in academic literature. Instead of manually reading 50+ papers to understand a research field, ResearchLens uses a specialized team of AI agents to conduct literature reviews and identify research opportunities in minutes.
 
 ---
 
-## 🏗️ Architecture Diagram
+## Key Features
 
-<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/93ac12b6-6826-45d1-9fab-d26a95666611" />
-
-
-### Data Flow
-
-<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/9ad74b2f-2159-4d22-a8d6-ce2b5ca2af01" />
-
-
-## 🚀 User Flow
-
-<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/e3f8a01f-9ef6-4270-ab89-74ce75eb9268" />
-
-```
+- **4-Agent AI System** - Specialized agents for searching, analyzing, and synthesizing research
+- **Intelligent Paper Search** - Searches millions of academic papers via LinkUp API
+- **Automatic Gap Detection** - Identifies unexplored combinations and research opportunities
+- **Methodology Analysis** - Creates comparison matrices across different approaches
+- **Publication-Ready Reports** - State-of-the-art summaries, gaps, and future directions
+- **Multi-Format Export** - JSON, Markdown, and PDF outputs
+- **Dual Deployment** - Run locally for best quality or deploy to cloud for easy sharing
+- **IDE Integration** - Optional MCP support for Cursor and Claude Desktop
+- **Completely Free** - Uses free tiers of all APIs, no credit card required
 
 ---
 
-## 📦 Two Deployment Approaches
+## How It Works
 
-### Approach 1: Local Development (Best Quality)
-
-**Use this for development on your computer**
+ResearchLens uses four specialized AI agents that work together:
 
 ```
-Your Machine
-    │
-    ├─ Streamlit (web UI on port 8501)
-    ├─ CrewAI (agent orchestration)
-    ├─ Ollama (local LLM - best quality)
-    └─ LinkUp API (paper search)
+User Input: "Efficient attention mechanisms in transformers"
+    |
+    +-> Agent 1: Literature Reviewer
+    |   - Searches LinkUp API for 50-100 relevant papers
+    |   - Extracts methodologies, datasets, benchmarks
+    |
+    +-> Agent 2: Methodology Analyst
+    |   - Creates comparison matrix of approaches
+    |   - Identifies which techniques appear together
+    |   - Extracts performance metrics
+    |
+    +-> Agent 3: Gap Analyst
+    |   - Finds unexplored combinations
+    |   - Identifies contradictions between papers
+    |   - Spots emerging opportunities
+    |
+    +-> Agent 4: Report Writer
+    |   - Synthesizes findings into structured report
+    |   - Generates SOTA summary
+    |   - Documents gaps and future work
+    |
+Result: Complete research analysis in 2 minutes
 ```
+
+### Example Output
+
+**Input:** "Efficient attention mechanisms in transformer models"
+
+**Output includes:**
+
+State-of-the-Art Summary:
+- Flash Attention (2022) - 10x faster inference
+- Multi-Query Attention (2023) - Reduces KV cache
+- Sparse Attention - 50% parameter reduction
+
+Research Gaps Identified:
+- No attention method optimizes both speed AND memory simultaneously
+- Sparse attention not benchmarked on large language models
+- Cross-domain attention transfer not studied
+
+Future Work Recommendations:
+- Hybrid Flash + Sparse Attention approach
+- Domain-aware attention pattern optimization
+- Hardware-aware kernel design
+
+**Time to completion:** 2 minutes (vs 2 weeks manually)
+
+---
+
+## Deployment Options
+
+### Local Development (Best Quality)
+
+Run on your computer with DeepSeek-R1 7B for highest quality reasoning.
+
+**Best for:**
+- Development and experimentation
+- Best AI reasoning quality
+- Complete data privacy
 
 **Requirements:**
 - Python 3.10+
-- Ollama installed locally
-- 8GB RAM minimum (16GB recommended for smooth operation)
-- Optional: GPU for faster inference
+- 8GB RAM minimum (16GB recommended)
+- Ollama installed
 
-**Steps:** See [Local Setup](#local-setup-with-ollama) section below
+**Setup time:** 10 minutes
 
----
-
-### Approach 2: Cloud Deployment (Free & Easy)
-
-**Use this to deploy publicly on Streamlit Cloud**
-
-```
-GitHub (Your Code)
-    │
-    ▼
-Streamlit Cloud
-    │
-    ├─ Streamlit (web UI - hosted)
-    ├─ CrewAI (agent orchestration)
-    ├─ Groq Cloud API (fast LLM - free tier)
-    └─ LinkUp API (paper search)
-```
-
-**Benefits:**
-- ✅ Fully free (Groq + LinkUp free tiers)
-- ✅ No server costs
-- ✅ Publicly accessible
-- ✅ Auto-deploy on GitHub push
-- ✅ Fast inference (Groq's optimization)
-
-**Steps:** See [Cloud Deployment](#cloud-deployment-to-streamlit-cloud) section below
+**Performance:**
+- With GPU: 1.5-2 minutes per query
+- Without GPU: 2-5 minutes per query
 
 ---
 
-## 🗂️ Project Structure
+### Cloud Deployment (Easiest)
 
-### Root Directory (Essential Files Only)
+Deploy to Streamlit Cloud for a public URL anyone can access.
 
-```
-deep-research-mcp/
-├── README.md               ← Complete guide (you are here!)
-├── server.py               ← MCP server for IDE integration (optional)
-└── Two approaches below ⬇️
-```
+**Best for:**
+- Sharing research with colleagues
+- Public demonstrations
+- No local installation required
 
-### Approach 1: Local Development (Ollama)
+**Setup time:** 5 minutes
 
-```
-local-ollama-version/
-├── app.py                  ← Streamlit web interface
-├── agents.py               ← CrewAI with Ollama + Groq fallback
-├── requirements.txt        ← Dependencies (streamlit, crewai, etc.)
-├── .env.example            ← Template for API keys
-├── .gitignore              ← Protects .env from git
-└── SETUP_LOCAL.md          ← 10-minute setup guide
-```
+**Performance:** 1.5 minutes per query (Groq optimization)
 
-### Approach 2: Cloud Deployment (Groq)
-
-```
-groq-cloud-version/
-├── app.py                  ← Streamlit web interface
-├── agents.py               ← CrewAI with Groq-only setup
-├── requirements.txt        ← Dependencies (same as local)
-├── .env.example            ← Template for API keys
-├── .gitignore              ← Protects .env from git
-└── SETUP_CLOUD.md          ← 5-minute deployment guide
-```
-
-**Key Differences:**
-- `local-ollama-version/agents.py`: Ollama first → Groq fallback (best quality)
-- `groq-cloud-version/agents.py`: Groq only (cloud optimized, faster startup)
+**Cost:** Free (uses Groq and LinkUp free tiers)
 
 ---
 
-## 🔧 Setup Instructions
+## Quick Start
 
-### Prerequisites
+### Option 1: Local Setup
 
 ```bash
-# Check Python version (3.10+ required)
-python --version
-
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-# Windows:
-.\venv\Scripts\activate
-# Mac/Linux:
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### Local Setup with Ollama
-
-**Best for development - highest quality reasoning**
-
-#### Step 1: Install Ollama
-
-1. Download from https://ollama.ai
-2. Install and run: `ollama serve` (keeps it running in background)
-
-#### Step 2: Pull DeepSeek-R1 Model
-
-```bash
+# 1. Install Ollama from https://ollama.ai
+# 2. Download the model
 ollama pull deepseek-r1:7b
-```
 
-This downloads ~4.7GB (first run only). Subsequent runs use cached model.
+# 3. Clone repository
+git clone https://github.com/codewithadvi/DeepResearchMCP.git
+cd DeepResearchMCP/local-ollama-version
 
-#### Step 3: Get API Keys
+# 4. Setup Python environment
+python -m venv venv
+venv\Scripts\activate  # Windows
+# source venv/bin/activate  # Mac/Linux
 
-**LinkUp API** (required):
-- Visit https://linkup.so
-- Sign up for free
-- Copy your API key
-
-#### Step 4: Configure Environment
-
-Create `.env` file in project root:
-
-```
-LINKUP_API_KEY=your_linkup_api_key_here
-GROQ_API_KEY=your_groq_api_key_here
-```
-
-(GROQ_API_KEY is fallback for cloud deployment - optional locally)
-
-#### Step 5: Run Locally
-
-```bash
-streamlit run app.py
-```
-
-Opens at `http://localhost:8501`
-
-**Performance Notes:**
-- GPU available: ~30 seconds per query
-- CPU only: ~2-5 minutes per query
-- First run may be slower (model initialization)
-
----
-
-### Cloud Deployment to Streamlit Cloud
-
-**Deploy for free to public internet**
-
-#### Option A: From Main Folder (Recommended for Portfolio)
-
-If you want automatic Ollama→Groq fallback:
-
-1. **Push to GitHub:**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git remote add origin https://github.com/YOUR_USERNAME/deep-research-mcp.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-2. **Create Streamlit Cloud Account:**
-   - Visit https://share.streamlit.io
-   - Sign in with GitHub
-
-3. **Deploy:**
-   - Click "New app"
-   - Select your `deep-research-mcp` repository
-   - Main file path: `app.py`
-   - Click "Deploy"
-
-4. **Add Secrets:**
-   - Go to app settings → "Secrets"
-   - Add two secrets:
-     ```
-     LINKUP_API_KEY=your_linkup_key
-     GROQ_API_KEY=your_groq_key
-     ```
-   - Click "Reboot app"
-
-5. **App is Live!** 🎉
-   - Visit your public URL (shown in Streamlit Cloud dashboard)
-   - Share with anyone!
-
-#### Option B: From `groq-cloud-version/` Folder (Cloud-Optimized)
-
-If you only want Groq (no Ollama fallback):
-
-```bash
-# Copy groq-cloud-version files to new repo root
-cp groq-cloud-version/* ./
-```
-
-Then follow steps 1-5 above. This version skips Ollama checks (faster startup).
-
----
-
-## 🛠️ Advanced: Using with MCP (Optional)
-
-### What is MCP?
-
-**Model Context Protocol (MCP)** - a standardized way for AI systems (Claude, Cursor IDE, etc.) to call your custom tools directly.
-
-Instead of HTTP APIs, MCP exposes Python functions as callable tools that AI assistants can use natively.
-
-**Why use MCP?**
-- 🔌 **IDE Integration** - Use research tools directly in Cursor/Claude
-- 🤖 **AI-Native** - Claude can decide when to run research automatically
-- 🔄 **Bi-directional** - IDE tools call your Python code, results flow back
-- 📚 **Context Aware** - AI understands what research tools are available and when to use them
-
-### When to Use MCP
-
-| Use Case | Your Setup | How It Works |
-|----------|-----------|-------------|
-| **Web App Only** | Streamlit (local or cloud) | Users interact via browser |
-| **IDE Integration** | MCP Server + Cursor/Claude | AI assistants call research tools |
-| **Both** | Streamlit + MCP together | Web app AND IDE integration |
-
-### MCP Server Code
-
-Your `server.py` file contains the MCP implementation:
-
-```python
-from mcp.server.fastmcp import FastMCP
-from agents import run_research
-import os
-
-# Initialize the MCP Server
-# "dependencies" tells the client what python libraries to install if needed
-mcp = FastMCP("Deep Researcher", dependencies=["crewai", "linkup-sdk", "python-dotenv"])
-
-@mcp.tool()
-def research_topic(topic: str) -> str:
-    """
-    Performs deep internet research on a specific topic using AI agents.
-    
-    Args:
-        topic: The subject to research (e.g., "Latest trends in AI 2025")
-    
-    Returns:
-        str: Comprehensive research report with SOTA, gaps, and future work
-    """
-    try:
-        # Ensure the key is loaded
-        if not os.getenv("LINKUP_API_KEY"):
-            return "Error: LINKUP_API_KEY not found in environment variables."
-            
-        return run_research(topic)
-    except Exception as e:
-        return f"Research failed: {str(e)}"
-
-# Run the server using stdio (Standard Input/Output)
-if __name__ == "__main__":
-    mcp.run(transport="stdio")
-```
-
-**What This Does:**
-- Exposes `research_topic()` function as a tool to MCP clients
-- Any AI tool (Claude, Cursor) can call this function
-- Results flow back to the AI assistant for further analysis
-
-### Setup MCP with Cursor IDE
-
-**Step 1: Install Cursor**
-- Download from https://cursor.sh
-- Install on your machine
-
-**Step 2: Configure MCP Connection**
-
-In Cursor, go to **Settings → Cursor Settings → Tools**
-
-Add the MCP server configuration:
-
-```json
-{
-  "mcpServers": {
-    "deep-research": {
-      "command": "python",
-      "args": ["/absolute/path/to/deep-research-mcp/server.py"],
-      "env": {
-        "LINKUP_API_KEY": "your_linkup_key_here",
-        "GROQ_API_KEY": "your_groq_key_here"
-      }
-    }
-  }
-}
-```
-
-**Important:** Use absolute paths, not relative paths!
-
-**Step 3: Restart Cursor**
-- Close and reopen Cursor
-- Cursor will automatically start your MCP server
-
-**Step 4: Use in Cursor**
-
-Now in Cursor, you can ask:
-
-```
-@research-topic "quantum computing error correction approaches"
-```
-
-Or let Claude decide when to research:
-
-```
-I'm writing a paper on machine learning. Before we start, 
-research the latest trends and papers from 2024-2025.
-```
-
-Cursor will automatically call your research tool!
-
-### Setup MCP with Claude Desktop
-
-**Step 1: Install Claude Desktop**
-- Download from https://claude.ai/chat
-- Install on your machine
-
-**Step 2: Configure MCP Connection**
-
-Create or edit `claude_desktop_config.json`:
-
-**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
-**Mac:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Linux:** `~/.config/Claude/claude_desktop_config.json`
-
-Add:
-
-```json
-{
-  "mcpServers": {
-    "deep-research": {
-      "command": "python",
-      "args": ["/absolute/path/to/deep-research-mcp/server.py"],
-      "env": {
-        "LINKUP_API_KEY": "your_linkup_key_here",
-        "GROQ_API_KEY": "your_groq_key_here"
-      }
-    }
-  }
-}
-```
-
-**Step 3: Restart Claude Desktop**
-
-**Step 4: Check Tools Panel**
-
-In Claude Desktop, you'll see a new "Tools" section:
-- `research_topic` - Your research tool is now available!
-
-Ask Claude:
-
-```
-Research quantum computing advances in 2024 and summarize the gaps in the field.
-```
-
-Claude will use your MCP-connected research tool!
-
-### MCP + Streamlit Together
-
-You can run **both** simultaneously:
-
-**Terminal 1: Streamlit App**
-```bash
-cd local-ollama-version
-streamlit run app.py
-```
-Opens at `http://localhost:8501`
-
-**Terminal 2: MCP Server**
-```bash
-python server.py
-```
-Connected to Cursor/Claude
-
-**Benefits:**
-- Use web app for interactive research
-- Use MCP for IDE-integrated research
-- Same backend (agents.py) powers both
-
-### Troubleshooting MCP
-
-**Issue: "MCP Server failed to start"**
-```
-Solution:
-1. Check absolute path is correct (not relative)
-2. Ensure python in PATH: python --version
-3. Install MCP dependencies: pip install mcp
-4. Check .env file exists with API keys
-```
-
-**Issue: "Tool not appearing in Cursor/Claude"**
-```
-Solution:
-1. Restart the IDE completely
-2. Check server.py syntax: python server.py (should start without errors)
-3. Verify paths in config are absolute, not relative
-4. Check API keys are in .env file
-```
-
-**Issue: "Research returns error"**
-```
-Solution:
-1. Same as Streamlit errors
-2. Make sure LINKUP_API_KEY is set in .env
-3. Test agents.py directly: python -c "from agents import run_research; print(run_research('test'))"
-```
-
-### MCP Dependencies
-
-The MCP server requires these additional packages:
-
-```bash
-pip install mcp
-pip install crewai linkup-sdk python-dotenv pydantic fpdf2
-```
-
-Or install everything:
-```bash
+# 5. Install dependencies
 pip install -r requirements.txt
-pip install mcp
+
+# 6. Get API key from https://linkup.so
+# Create .env file with: LINKUP_API_KEY=your_key
+
+# 7. Run application
+streamlit run app.py
 ```
 
-Note: Both `local-ollama-version/` and `groq-cloud-version/` include `mcp` in their requirements if you plan to use MCP.
+Opens at http://localhost:8501
 
 ---
 
-## 📊 System Requirements
+### Option 2: Cloud Deployment
+
+```bash
+# 1. Get free API keys
+#    - LinkUp: https://linkup.so (sign up for free)
+#    - Groq: https://console.groq.com (no credit card)
+
+# 2. Fork repository on GitHub
+#    github.com/codewithadvi/DeepResearchMCP
+
+# 3. Deploy to Streamlit Cloud
+#    - Visit https://share.streamlit.io
+#    - New app -> Select your fork
+#    - Main file: groq-cloud-version/app.py
+
+# 4. Add secrets in Streamlit dashboard
+#    Settings -> Secrets
+#    LINKUP_API_KEY=your_key
+#    GROQ_API_KEY=your_key
+
+# Your app is now live at: https://yourname-researchlens.streamlit.app
+```
+
+---
+
+## Architecture
+
+### System Design
+
+```
+User Interface (Streamlit)
+    |
+    v
+Orchestration (CrewAI)
+    |
+    +-- AI Model Layer
+    |   - Local: DeepSeek-R1 (via Ollama)
+    |   - Cloud: Mixtral 8x7B (via Groq)
+    |
+    +-- Data Access Layer
+    |   - LinkUp API (academic paper search)
+    |   - 100+ million papers indexed
+    |
+    v
+Agent Workflow Pipeline
+    - Literature Reviewer -> Methodology Analyst -> Gap Analyst -> Report Writer
+    - Data flows automatically between agents
+    - Each agent builds on previous agent's output
+```
+
+---
+
+## System Requirements
 
 ### Local Development
 
@@ -490,9 +205,8 @@ Note: Both `local-ollama-version/` and `groq-cloud-version/` include `mcp` in th
 |-----------|---------|-------------|
 | Python | 3.10 | 3.11+ |
 | RAM | 8GB | 16GB+ |
-| Disk | 20GB | 30GB+ (for models) |
-| GPU | None | NVIDIA/AMD (optional) |
-| Network | 50 Mbps | 100 Mbps+ |
+| Disk Space | 20GB | 30GB+ |
+| GPU | Optional | NVIDIA/AMD (optional) |
 
 ### Cloud Deployment
 
@@ -500,275 +214,157 @@ Note: Both `local-ollama-version/` and `groq-cloud-version/` include `mcp` in th
 |-----------|-----------------|
 | RAM | Shared (1-4GB) |
 | CPU | Shared |
-| GPU | None (not needed) |
-| Network | Automatic |
-| Cost | FREE ✅ |
+| GPU | Not needed |
+| Cost | Free |
 
 ---
 
-## 💰 Cost Analysis
+## Costs
 
-### Local Development
+Completely free using free tiers:
 
-| Service | Cost | Notes |
-|---------|------|-------|
-| Ollama | FREE | Download once, run locally |
-| LinkUp API | FREE (limited) | ~100 searches/month free tier |
-| Groq API | FREE (not used locally) | Fallback only |
-| **Total** | **~$0** | Completely free |
-
-### Cloud Deployment
-
-| Service | Cost | Notes |
-|---------|------|-------|
-| Streamlit Cloud | FREE | Host app forever free |
-| Groq API | FREE (~0.14/1M tokens) | ~$0-3/month if moderate use |
-| LinkUp API | FREE (limited) | ~100 searches/month free tier |
-| **Total** | **~$0-3/month** | Essentially free |
-
-**To reduce costs further:**
-- Use LinkUp free tier (100 searches/month)
-- Groq free tier: 120 req/min (unlimited)
-- Cache search results (future enhancement)
+| Service | Cost | Details |
+|---------|------|---------|
+| LinkUp API | Free | 100 searches/month |
+| Groq API | Free | 120 requests/min, unlimited |
+| Ollama | Free | Download once, use locally |
+| Streamlit Cloud | Free | Unlimited hosting |
+| **Total** | **$0/month** | Completely free |
 
 ---
 
-## 🔄 How Agent System Works
+## Use Cases
 
-### The 4-Agent Pipeline
+**PhD Student:** Start a research project on "transformer efficiency"
+- Manual approach: Read 50+ papers over 2-3 weeks
+- ResearchLens: Get SOTA summary, 5 identified gaps, future directions in 2 minutes
 
-```
-┌─────────────────────────┐
-│ 1. Literature Reviewer  │
-│                         │
-│ Inputs: Research topic  │
-│ Action: Search papers   │
-│ Output: Paper summaries │
-│         Models/Datasets │
-│         Future Work     │
-└────────────┬────────────┘
-             │
-             ▼
-┌─────────────────────────┐
-│ 2. Methodology Analyst  │
-│                         │
-│ Inputs: Search results  │
-│ Action: Extract methods │
-│ Output: Comparison      │
-│         matrix          │
-│         Metrics         │
-└────────────┬────────────┘
-             │
-             ▼
-┌─────────────────────────┐
-│ 3. Gap Analyst          │
-│                         │
-│ Inputs: Methods matrix  │
-│ Action: Identify gaps   │
-│ Output: Research gaps   │
-│         Contradictions  │
-│         Innovations     │
-└────────────┬────────────┘
-             │
-             ▼
-┌─────────────────────────┐
-│ 4. Report Writer        │
-│                         │
-│ Inputs: All analysis    │
-│ Action: Synthesize      │
-│ Output: Final report    │
-│         SOTA section    │
-│         Gaps section    │
-│         Future work     │
-└────────────┬────────────┘
-             │
-             ▼
-         [FINAL REPORT]
-```
+**Research Engineer:** Find unexplored areas in "vision-language models"
+- See comparison of all VLM approaches
+- Identify: "No VLM trained on 3D video"
+- Result: Novel research direction identified
 
-### Agent Roles & Responsibilities
-
-| Agent | Role | Specialization | Tools Used |
-|-------|------|----------------|-----------|
-| Literature Reviewer | Researcher | Searching papers | LinkUp API |
-| Methodology Analyst | Data Scientist | Extracting patterns | LLM analysis |
-| Gap Analyst | PhD Advisor | Strategic thinking | Reasoning models |
-| Report Writer | Academic Writer | Synthesis & presentation | Language generation |
+**Research Manager:** Understand state-of-field in "efficient inference"
+- Get SOTA technologies, limitations, and investment opportunities
+- All in one structured report
 
 ---
 
-## 🎯 Example Usage
+## Advanced: MCP Integration (Optional)
 
-### Query 1: Recent AI Research
+Model Context Protocol (MCP) allows AI coding assistants like Cursor and Claude Desktop to call ResearchLens automatically.
 
+**Use case:** Your AI can research topics while you code without leaving your IDE.
+
+**Example:**
 ```
-Topic: "Efficient attention mechanisms in transformer models"
-
-System Flow:
-├─ Search papers on efficient attention
-├─ Extract: Flash Attention, Multi-Query Attention, KV-Cache
-├─ Identify gap: "No attention mechanism optimizes for both speed AND memory"
-└─ Report: SOTA + Gap + Future directions
+In Cursor: "Research quantum error correction approaches before we start"
+Cursor AI: Automatically calls ResearchLens -> gets summary -> suggests implementation
 ```
 
-## 📈 Performance Metrics
+### Setup with Cursor
 
-### Local Development (Ollama)
+1. Install Cursor from https://cursor.sh
+2. Add to Cursor settings:
+```json
+{
+  "mcpServers": {
+    "research": {
+      "command": "python",
+      "args": ["/absolute/path/to/server.py"],
+      "env": {
+        "LINKUP_API_KEY": "your_key",
+        "GROQ_API_KEY": "your_key"
+      }
+    }
+  }
+}
+```
+3. Restart Cursor
 
-| Metric | CPU-Only | GPU (NVIDIA) |
-|--------|----------|--------------|
-| Search | 20s | 10s |
-| Analysis | 120s | 30s |
-| Report Gen | 180s | 40s |
-| **Total** | **~5 min** | **~1.5 min** |
-
-### Cloud Deployment (Groq)
-
-| Metric | Groq Free |
-|--------|-----------|
-| Search | 15s |
-| Analysis | 25s |
-| Report Gen | 45s |
-| **Total** | **~1.5 min** |
-
-**Groq is actually faster** due to inference optimization! ⚡
+Your AI assistant can now research topics on demand.
 
 ---
-## 📄 License
-
-MIT License - Use freely for personal or commercial projects
----
-## Quick Start
-
-### 1. Clone & Setup
-
-```bash
-git clone https://github.com/YOUR_USERNAME/deep-research-mcp.git
-cd deep-research-mcp
-python -m venv venv
-.\venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Mac/Linux
-pip install -r requirements.txt
-```
-
-### 2. Get Free API Keys
-
-**LinkUp API** (required):
-1. Visit https://linkup.so
-2. Sign up for free
-3. Copy your API key
-
-**Groq API** (required for Streamlit Cloud, free):
-1. Visit https://console.groq.com
-2. Sign up (no credit card needed)
-3. Copy your API key
-
-**Ollama** (optional, for best local quality):
-1. Download from https://ollama.ai
-2. Run: `ollama pull deepseek-r1:7b`
-
-### 3. Configure Environment
-
-Create `.env` file in project root:
-
-```
-LINKUP_API_KEY=your_linkup_key_here
-GROQ_API_KEY=your_groq_key_here
-```
-
-(Don't commit this file - it's in `.gitignore`)
-
-### 4. Run Locally
-
-```bash
-streamlit run app.py
-```
-
-Opens at `http://localhost:8501`
-
-## Usage
-
-1. **Enter a research topic** in the text input (e.g., "quantum error correction in superconducting qubits")
-2. **Wait for analysis** (takes 1-2 minutes)
-3. **View research gaps** identified by the AI agents
-4. **Export results** as JSON, Markdown, or PDF
-5. **View history** in the sidebar
-
-## Deploy to Streamlit Cloud (Free)
-
-### Step 1: Push to GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/YOUR_USERNAME/deep-research-mcp.git
-git branch -M main
-git push -u origin main
-```
-
-### Step 2: Deploy on Streamlit Cloud
-
-1. Go to https://share.streamlit.io
-2. Click "New app"
-3. Select your GitHub repo
-4. Main file path: `app.py`
-5. Click "Deploy"
-
-### Step 3: Add Secrets
-
-In Streamlit Cloud app settings:
-
-1. Click "Settings" → "Secrets"
-2. Add:
-   ```
-   LINKUP_API_KEY=your_key
-   GROQ_API_KEY=your_key
-   ```
-3. Reboot app
-
-**Your app is now live and free!** 
 
 ## Project Structure
 
 ```
 deep-research-mcp/
-├── app.py              # Streamlit web interface
-├── agents.py           # CrewAI multi-agent system
-├── server.py           # MCP protocol server (optional)
-├── requirements.txt    # Python dependencies
-├── .env                # Local API keys (not committed)
-├── .gitignore          # Protects secrets
-└── README.md           # This file
+├── local-ollama-version/
+│   ├── app.py                 # Streamlit web interface
+│   ├── agents.py              # CrewAI agent system
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── groq-cloud-version/
+│   ├── app.py                 # Streamlit web interface
+│   ├── agents.py              # Groq-only setup
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── server.py                  # MCP server (optional)
+├── README.md                  # This file
+└── .gitignore                 # Protects secrets
 ```
 
-## Configuration
+Key difference:
+- Local version: Ollama + Groq fallback (best quality)
+- Cloud version: Groq only (optimized for cloud, faster startup)
 
-### Local Development (Best Quality)
+---
 
-Uses your local Ollama with DeepSeek-R1 7B. Fastest if GPU available, slower on CPU.
+## Troubleshooting
 
+**Local version not starting:**
 ```bash
-ollama pull deepseek-r1:7b
+# Ensure Ollama is running
+ollama serve
+
+# In another terminal
 streamlit run app.py
 ```
 
-### Streamlit Cloud (Best Deployment)
+**Cloud version showing errors:**
+- Verify API keys are added in Streamlit Secrets (not .env)
+- Check keys haven't expired
+- Restart the app in Streamlit dashboard
 
-Automatically uses Groq free tier. Fast inference, completely free.
+**MCP not working:**
+- Use absolute file paths (not relative)
+- Verify Python is in system PATH
+- Check .env file contains valid API keys
+- Restart your IDE
 
-### Hybrid (Recommended)
+---
 
-- **Develop locally** with DeepSeek-R1 for best quality
-- **Deploy to Streamlit Cloud** with Groq for free public access
-- Same code works for both!
+## Contributing
 
-## Costs
+Bug reports and feature requests welcome. Some ideas:
+- Custom export formats
+- PDF with visualizations
+- Integration with Notion/Obsidian
+- Multi-topic comparison
 
-- **LinkUp API:** Free tier (limited searches)
-- **Groq API:** Free tier (120 requests/minute, unlimited)
-- **Streamlit Cloud:** Free forever
-- **Ollama:** Free, local only
-- **Total:** $0/month if using free tiers ✅
+---
 
+## License
 
+MIT License - Free for personal and commercial use
+
+---
+
+## Getting Started
+
+1. Choose your deployment:
+   - **Local:** Best quality reasoning
+   - **Cloud:** Easiest to share
+
+2. Get free API keys:
+   - LinkUp: https://linkup.so
+   - Groq: https://console.groq.com
+
+3. Follow the Quick Start section above
+
+4. Enter a research topic and get results in 2 minutes
+
+For questions or issues, open a GitHub discussion or issue.
