@@ -13,6 +13,9 @@ warnings.filterwarnings("ignore", message=".*signal only works in main thread.*"
 # Load environment variables
 load_dotenv()
 
+# Disable CrewAI telemetry to avoid signal handler warnings with Streamlit
+os.environ["OTEL_SDK_DISABLED"] = "true"
+
 # --- 1. SETUP LLM (GROQ ONLY - Cloud Optimized) ---
 def get_llm_client():
     """Uses Groq Cloud API (free tier with generous limits)"""
