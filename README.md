@@ -74,6 +74,7 @@ User Input: "Efficient attention mechanisms in transformers"
         
 Result: Complete research analysis (2 minutes)
 ```
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/6939ee45-aa23-484c-a78a-8df6e97db9c4" />
 
 ### Example Output
 
@@ -226,8 +227,6 @@ streamlit run app.py
 ### System Design
 
 <img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/91d9dfbe-d3d8-46fb-a239-5c1c47cb6757" />
-<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/6939ee45-aa23-484c-a78a-8df6e97db9c4" />
-
 ---
 ### User Flow Diagram
 
