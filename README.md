@@ -337,22 +337,6 @@ streamlit run app.py
 
 ---
 
-## Contributing
-
-Bug reports and feature requests welcome. Some ideas:
-- Custom export formats
-- PDF with visualizations
-- Integration with Notion/Obsidian
-- Multi-topic comparison
-
----
-
-## License
-
-MIT License - Free for personal and commercial use
-
----
-
 ## Getting Started
 
 1. Choose your deployment:
