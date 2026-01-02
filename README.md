@@ -225,50 +225,15 @@ streamlit run app.py
 
 ### System Design
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    User Interface                        │
-│                   Streamlit Web App                      │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────────┐
-│            Orchestration Layer (CrewAI)                 │
-│   Manages agent workflow and data passing between       │
-│   agents using hierarchical process coordination        │
-└──────────────┬────────────────────────────┬─────────────┘
-               │                            │
-    ┌──────────▼──────────┐    ┌───────────▼────────┐
-    │  AI Model Layer     │    │ Data Access Layer  │
-    │                     │    │                    │
-    │ Local:              │    │ LinkUp API:        │
-    │ • DeepSeek-R1 7B   │    │ • Paper search     │
-    │ • Via Ollama        │    │ • Full-text access │
-    │ • On-device         │    │ • Metadata         │
-    │                     │    │                    │
-    │ Cloud:              │    │ Coverage:          │
-    │ • Mixtral 8x7B      │    │ • 100M+ papers     │
-    │ • Via Groq API      │    │ • All disciplines  │
-    │ • GPU-optimized     │    │                    │
-    └─────────┬───────────┘    └────────┬───────────┘
-              │                         │
-              └──────────┬──────────────┘
-                         │
-        ┌────────────────▼─────────────────┐
-        │   Agent Workflow Pipeline        │
-        │                                  │
-        │  Agent 1 → Agent 2 → Agent 3   │
-        │    ↓        ↓        ↓          │
-        │  Search  Extract   Gap         │
-        │  Papers  Methods   Analysis    │
-        │    ↓        ↓        ↓          │
-        │  ────────────────────────      │
-        │         ↓                      │
-        │     Agent 4: Report            │
-        │         ↓                      │
-        │   Final Research Report        │
-        └────────────────────────────────┘
-```
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/91d9dfbe-d3d8-46fb-a239-5c1c47cb6757" />
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/6939ee45-aa23-484c-a78a-8df6e97db9c4" />
 
+---
+### User Flow Diagram
+
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/e4dd6dfb-a42b-413d-a6c0-d91e20506679" />
+
+---
 ### Technology Stack
 
 | Component | Technology | Purpose |
@@ -520,5 +485,3 @@ Built with:
 ---
 
 **Made for researchers who want to focus on ideas, not literature reviews.**
-
-[Star us on GitHub](https://github.com/codewithadvi/DeepResearchMCP) • [Deployment Guide](#deployment-options) • [Report Bug](https://github.com/codewithadvi/DeepResearchMCP/issues)
